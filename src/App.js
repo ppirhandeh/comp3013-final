@@ -1,23 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState, useEffect } from 'react';
+import FoodList from './components/foodList';
+import SearchComponent from './components/search';
+import { foods } from './foods';
 
 function App() {
+  const [filteredFoods, setFilteredFoods] = useState(foods);
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const handleSearchChange = (filteredData, searchItem) => {
+    setFilteredFoods(filteredData);
+    setSearchTerm(searchItem);
+  };
+
+  useEffect(() => {
+    //console.log('Filtered Foods Changed:', filteredFoods);
+  }, [handleSearchChange, searchTerm]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <SearchComponent searchList = {foods} onSearchChange={handleSearchChange}/>
+      <FoodList filteredFoods={filteredFoods} searchTerm={searchTerm}/>
     </div>
   );
 }
